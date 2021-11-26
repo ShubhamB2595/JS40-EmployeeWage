@@ -9,19 +9,19 @@ const MAX_HRS_IN_MONTH = 100;
 let isPresent = 1;
 let empHrs = 0, empWage = 0, monthlyWage = 0;
 let totalEmpHrs = 0, totalWorkingDays = 0;
-let empDailyWage = new Array();
+let empDailyWage = new Map();
 let day = 1;
 
 function getWorkingHours(empCheck) {
 	switch(empCheck) {
    		case IS_PART_TIME:
-        	empHrs = 4;
-        	break
-    	case IS_FULL_TIME:
-        	empHrs = 8;
-        	break
-    	default:
-        	empHrs = 0;
+        		empHrs = 4;
+        		break
+    		case IS_FULL_TIME:
+        		empHrs = 8;
+        		break
+    		default:
+        		empHrs = 0;
 	}
 	return empHrs;
 }
@@ -37,15 +37,14 @@ while(totalEmpHrs <= MAX_HRS_IN_MONTH && totalWorkingDays <= NUM_OF_WORKING_DAYS
 
 	empHrs = getWorkingHours(empCheck);
 	totalEmpHrs += empHrs;
-	empDailyWage.push(calculateDailyWage(empHrs));
+	empDailyWage.set(totalWorkingDays, calculateDailyWage(empHrs));
 }
 
 monthlyWage = calculateDailyWage(totalEmpHrs);
 
 console.log("Daily Wage History:");
-while(day < empDailyWage.length){
-    console.log("Day "+day+": "+ empDailyWage[day]);
-    day++;
-}
+empDailyWage.forEach(function(value, key){
+    console.log("Day"+key + ": "+ value);
+});
 
 console.log("Employee Monthly Wage = "+ monthlyWage);
